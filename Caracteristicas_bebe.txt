@@ -1,0 +1,180 @@
+enum class EstadosBebes{
+    despierto,
+    llorando,
+    dormido,
+    comiendo,
+    cagado_y_miado,
+    viendo_paw_patrol,
+    tieso,
+    bebiendo,
+    camina,
+    perdido,
+    quieto,
+    llamando
+}
+
+class Bebe(
+        var nombre: String,
+        var hambre: Int,
+        var pañal_lleno: Int,
+        var sueño: Int,
+        var estado: EstadosBebes = EstadosBebes.despierto,
+        ){
+        
+    fun alimentar(){
+        estado = EstadosBebes.comiendo
+    }
+    
+    fun dormir(){
+        if((estado == EstadosBebes.despierto || estado == EstadosBebes.comiendo || estado == EstadosBebes.llorando || estado == EstadosBebes.perdido) && sueño > 49){
+            sueño = 0
+            estado = EstadosBebes.dormido
+        }
+
+    }
+    
+    fun explorar(){
+        if((estado == EstadosBebes.despierto || estado == EstadosBebes.comiendo) && sueño < 50){
+            estado = EstadosBebes.camina
+        }else{
+            estado = EstadosBebes.quieto
+        }
+    }
+    
+    fun extraviado(){
+        if(estado == EstadosBebes.camina){
+            estado = EstadosBebes.perdido
+        }
+    }
+    
+    fun avisar(){
+        if(estado == EstadosBebes.quieto || estado == EstadosBebes.perdido){
+            estado = EstadosBebes.llamando
+            
+        }
+    }
+    
+    fun chillar(){
+        if(estado == EstadosBebes.llamando){
+            sueño += 70
+            estado = EstadosBebes.llorando
+        }
+    }
+    
+    fun despertar(){
+        if(estado == EstadosBebes.dormido){
+            estado = EstadosBebes.despierto
+        }
+    }
+    
+    fun despertar_con_agua(){
+        if(estado == EstadosBebes.dormido){
+            estado = EstadosBebes.tieso
+        }
+    }
+    
+    fun urgencia(){
+        if(pañal_lleno > 15){
+            estado = EstadosBebes.cagado_y_miado
+        }
+    }
+    
+    fun actualizar_estado(){
+        when(estado){
+            EstadosBebes.despierto -> {
+                sueño += 5
+                hambre += 5
+                pañal_lleno += 3
+            }
+            
+            EstadosBebes.comiendo -> {
+                hambre -= 40
+            }
+            
+            else -> {
+                if(estado == EstadosBebes.tieso){
+                    sueño += 0
+                    hambre += 0 
+                    pañal_lleno =+ 0
+                }
+            }
+        }
+    }
+    
+    fun picar_con_un_palo(): String{
+        return estado_actual()
+    }
+    
+    fun estado_actual(): String{
+        when(estado){
+            EstadosBebes.despierto -> {
+                return "El bebe esta despierto"
+            }
+            
+            EstadosBebes.tieso -> {
+                return "Estoy muerto"
+            }
+            
+            EstadosBebes.dormido -> {
+                return "Esta dormidito"
+            }
+            
+            EstadosBebes.comiendo -> {
+                return "Estoy alimentadome para ser grande y fuerte"
+            }
+            
+            EstadosBebes.camina -> {
+                return "Exploro para conocer mi entorno"
+            }
+            
+            EstadosBebes.quieto -> {
+                return "No quiero moverme, me da miedo"
+            }
+            
+            EstadosBebes.llamando -> {
+                return "Quiero que mi mami me encuentre y uso un telefono para llamarla"
+            }
+            
+            EstadosBebes.llorando -> {
+                return "Quiero ver a mi mami"
+            }
+            
+            EstadosBebes.perdido -> {
+                return "Ya no se donde estoy"
+            }
+            
+            else -> {
+                return "No identifico el estado"
+            }
+        }
+    }
+    
+}
+
+fun main(){
+    val JackieShieras = Bebe("Jackie Shieras", 50, 10, 70)
+    
+    JackieShieras.actualizar_estado()
+    println("El estado del bebe es ${JackieShieras.estado_actual()}")
+    JackieShieras.dormir()
+    println("El estado del bebe es ${JackieShieras.estado_actual()}")
+    JackieShieras.despertar()
+    println("El estado del bebe es ${JackieShieras.estado_actual()}")    
+    JackieShieras.alimentar()
+    println("El estado del bebe es ${JackieShieras.estado_actual()}")
+    JackieShieras.explorar()
+    println("El estado del bebe es ${JackieShieras.estado_actual()}")
+    JackieShieras.extraviado()
+    println("El estado del bebe es ${JackieShieras.estado_actual()}")
+    JackieShieras.explorar()
+    println("El estado del bebe es ${JackieShieras.estado_actual()}")
+    JackieShieras.avisar()
+    println("El estado del bebe es ${JackieShieras.estado_actual()}")
+    JackieShieras.chillar()
+    println("El estado del bebe es ${JackieShieras.estado_actual()}")
+    JackieShieras.dormir()
+    println("El estado del bebe es ${JackieShieras.estado_actual()}")
+    JackieShieras.despertar_con_agua()
+    println("El estado del bebe es ${JackieShieras.estado_actual()}")
+    
+}
